@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+    <link rel="stylesheet" type="text/css" href="/easyui/themes/default/easyui.css">
+    <link rel="stylesheet" type="text/css" href="/easyui/themes/icon.css">
+    <link rel="stylesheet" type="text/css" href="/easyui/demo.css">
+    <script type="text/javascript" src="/easyui/jquery.min.js"></script>
+    <script type="text/javascript" src="/easyui/jquery.easyui.min.js"></script>
+
+</head>
+<body>
+
+<div id="tb">
+    材质：<input type="text" name="material" id="material" />
+    规格：<input type="text" name="specifications" id="specifications" />
+
+    <input type="button" id="queryBtn" value="查询" />
+</div>
+
+<table id="dg"></table>
+
+
+<script th:inline="javascript">
+    var uploadHistoryId = [[${uploadHistoryId}]];
+
+    console.log(uploadHistoryId);
+
+</script>
+
+<script th:inline="none">
+    var queryParams = {
+        uploadHistoryId: uploadHistoryId,
+        material: $("#material").val(),
+        specifications: $("#specifications").val()
+    }
+
+    $('#dg').datagrid({
+        url: '/covertResult/listByHistoryId',
+        dataType: "json",
+        columns:[[
+            {field:'id',title:'id',width:100},
+            {field:'name',title:'品名',width:100},
+            {field:'price',title:'价格',width:100,align:'right'},
+            {field:'origin',title:'产地',width:100,align:'right'},
+            {field:'specifications',title:'规格',width:100,align:'right'},
+            {field:'material',title:'材质',width:100,align:'right'},
+            {field:'warehouse',title:'仓库',width:100,align:'right'},
+
+            {field:'companyName',title:'公司',width:100,align:'right', formatter:function(value,row,index){
+                    return row.uploadHistory.company.name;
+                }}
+        ]],
+        queryParams: queryParams,
+        toolbar: '#tb'
+    });
+
+    $(function(){
+        $("#queryBtn").on('click', function(){
+            var queryParams = {
+                uploadHistoryId: uploadHistoryId,
+                material: $("#material").val(),
+                specifications: $("#specifications").val()
+            }
+
+            $('#dg').datagrid('options').queryParams = queryParams;
+            $('#dg').datagrid('reload');
+        })
+    })
+</script>
+
+</body>
+</html>

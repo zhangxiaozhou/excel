@@ -1,0 +1,23 @@
+server:
+  port: 9090
+  tomcat:
+    max-http-post-size: 200000000
+spring:
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/excel?characterEncoding=utf8&useSSL=false
+    username: root
+    password: yunaxiaozhou1
+    hikari:
+      auto-commit: false
+    type: com.zaxxer.hikari.HikariDataSource
+    platform: org.hibernate.dialect.MySQL57Dialect
+  jpa:
+    hibernate:
+      ddl-auto: update
+    database-platform: org.hibernate.dialect.MySQL57Dialect
+    show-sql: true
+  servlet:
+    multipart:
+      max-file-size: 150MB
+      max-request-size: 150MB
